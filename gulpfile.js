@@ -10,7 +10,21 @@ var elixir = require('laravel-elixir');
  | file for our application, as well as publishing vendor resources.
  |
  */
+elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-    mix.less('app.less');
+	mix.less('app.less');
+});
+elixir(function(mix) {
+	mix.scripts([
+		"script.js"
+	], 'public/js/script.js');
+});
+elixir(function(mix) {
+	mix.scripts([
+		"jquery-2.1.4.js",
+		"underscore.js",
+		"backbone.js",
+		"bootstrap.min.js"
+	], 'public/js/init.js');
 });
