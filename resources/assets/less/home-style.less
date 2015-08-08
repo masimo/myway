@@ -1,4 +1,13 @@
 @font-family: "Roboto", Helvetica, Arial, sans-serif;
+
+input[type="text"]::-webkit-input-placeholder,
+input[type="text"]::-moz-placeholder, 
+input[type="text"]:-moz-placeholder, 
+input[type="text"]:-ms-input-placeholder{
+	color:#000;
+	text-overflow:ellipsis;
+}
+
 .main-box{
 	font-family: @font-family;
 	.container {
@@ -22,5 +31,25 @@
 		    font-weight: 700;
 		    line-height: 55px;
 	    }
+	    .input-text-box {
+	    	margin-top: 20px;
+	    }
+
+	    .search-field {
+	    	border-radius: 5px;
+	    	width: 715px;
+	    	height: 50px;
+	    	padding-left: 20px;
+	    	font-size: 15px;
+	    	color: #555555;
+		}
+		.submit-search {
+			background: url(../img/magnf.png) no-repeat #8c8c8c;
+			border-radius: 0 5px 5px 0;
+			height: 50px;
+			width: 100px;
+			margin-top: 20px;
+			
+		}
 	}
 }
