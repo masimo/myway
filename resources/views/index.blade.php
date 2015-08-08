@@ -7,6 +7,7 @@
 	<title>Home Page</title>
 
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
 	<script src="{{ asset('/js/init.js') }}"></script>
 </head>
 <body>
