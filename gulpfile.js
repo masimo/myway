@@ -25,9 +25,9 @@ elixir(function(mix) {
 });
 elixir(function(mix) {
 	mix.scripts([
-		"jquery-2.1.4.js",
-		"underscore.js",
-		"backbone.js",
-		"bootstrap.min.js"
-	], 'public/js/init.js');
+		"_lib/underscore.js",
+		"_lib/jquery-2.1.4.js",
+		"_lib/backbone.js",
+		"_lib/bootstrap.min.js"
+	], 'public/js/_lib/init.js');
 });
