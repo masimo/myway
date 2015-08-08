@@ -13,7 +13,9 @@ var elixir = require('laravel-elixir');
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-	mix.less('app.less');
+	mix.less( 'app.less'[
+		"home-style.less"
+		], 'public/css/');
 });
 elixir(function(mix) {
 	mix.scripts([
