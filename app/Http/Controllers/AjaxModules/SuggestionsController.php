@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers\AjaxModules;
 
 use App\Http\Controllers\Controller;
+use Input;
+use Request;
 
 class SuggestionsController extends Controller {
 	private $client = null;
@@ -33,13 +35,24 @@ class SuggestionsController extends Controller {
 	 */
 	public function index()
 	{
-		return json_encode($this->getSuggestions());
+		if(Request::ajax()) {
+			$data = Input::all();
+
+			return json_encode($this->getSuggestions($data));
+	    }
 	}
-	private function getSuggestions()
+	private function getSuggestions($data = null)
 	{
-		$client = $this->getClient();
-		$res = $client->get('http://localhost:8080/criteria/2');
-		return $res->getBody()->getContents();
+		$result = array();
+
+		if ($data !== null) {
+			$client = $this->getClient();
+			$res = $client->post('http://localhost:8080/criteria/2', array(), $data);
+			$result = $res->getBody()->getContents();
+		}
+		
+		return $result;
+		
 	}
 
 	private function getClient()

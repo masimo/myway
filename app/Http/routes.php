@@ -16,5 +16,5 @@ Route::get('home', 'HomeController@index');
 
 Route::group(['prefix' => 'AjaxModules'], function()
 {
-    Route::get('suggestions', 'AjaxModules\SuggestionsController@index');
+    Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
 });
