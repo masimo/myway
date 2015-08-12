@@ -48,7 +48,7 @@
                 if (item.active == true) {
                     index = key;
                     return true;
-                };
+                }
             });
 
             console.log(index);
@@ -63,15 +63,9 @@
                 if (item.active == true) {
                     index = key;
                     return true;
-                };
+                }
             });
             
-            // if (index === undefined) {
-            //     index = suggestionList.length - 1;
-            // } else if (index <= suggestionList.length - 1) {
-            //     index = 0
-            // }
-
             console.log(index);
             // suggestionList[index].active = true;
             // that.set('suggestion', suggestionList);
