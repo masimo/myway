@@ -7,7 +7,7 @@
     var Model = Backbone.Model.extend({
         
         defaultQuery: {
-            "criteria": "", // "замоk",  - required
+            "criteria": "", //  - required
             "page": 1, // - not required default 1
             "limit": 6 // - not required default 6
         },
@@ -16,15 +16,18 @@
             this.on('change:searchField', this.getSuggestions, this);
             this.on('select_item', this.setItemToActiveState, this);
             this.on('add_item_to_criteria', this.addItemToCriteria, this);
+            this.on('submit', this.getSearchResults, this);
 
             this.search = new SerachCriteria;
 
             this.set('active', false);
+            this.set('loading', false);
             //
         },
         getSuggestions: function(query) {
             var that = this;
             var postData = _.extend({"criteria": this.get('searchField')}, this.defaultQuery);
+            this.set('loading', true);
             $.ajax({
                 method: "POST",
                 url: "/AjaxModules/suggestions",
@@ -48,8 +51,42 @@
                 that.set('active', false);
                 console.log("Connection failed");
             }).always(function() {
-                //do nothing
+                that.set('loading', false);
             });
+        },
+        getSearchResults: function() {
+            var that = this;
+            var postData = [];
+            console.log(this.search.get());
+            _.collect(this.search.get(), function(item, key, sads){
+                console.log(item, key, sads);
+            });
+            
+            // $.ajax({
+            //     method: "POST",
+            //     url: "/AjaxModules/suggestions",
+            //     data: postData,
+            //     dataType: 'json',
+            //     headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+            // }).done(function(data) {
+            //     var data = JSON.parse(data);
+            //     var suggestionList = [];
+
+            //     that.set('active', true);
+
+            //     for (var i = 0; i < data.criterias.length; i++) {
+            //         suggestionList.push(_.extend(data.criterias[i],{active:false}));
+            //     };  
+                
+            //     that.set('suggestion', suggestionList);
+            //     that.trigger("change_suggestion");
+
+            // }).fail(function() {
+            //     that.set('active', false);
+            //     console.log("Connection failed");
+            // }).always(function() {
+            //     that.set('loading', false);
+            // });
         },
         setCell: function(action) {
             var currentIndex = this.getActiveIndex();
@@ -81,6 +118,7 @@
             this.set('suggestion', suggestionList);
             this.trigger("change_suggestion");
         },
+
         getActiveIndex: function() {
             var index = -1; //not exist
             var suggestionList = this.get('suggestion');
@@ -117,7 +155,7 @@
 
         addItemToCriteria: function() {
             var currentIndex = this.getActiveIndex();
-
+            
             this.search.add(this.get('suggestion')[currentIndex]);
             this.trigger('added_to_search_field');
         }
@@ -130,11 +168,11 @@
         initialize: function(options) {
             this.$el = $(options.el);
             this.model = new Model;
-            this.search = new SerachCriteria;
 
             // model events
             this.model.on('change_suggestion', this.render, this);
             this.model.on('change:active', this.widgedCondition, this);
+            this.model.on('change:loading', this.loadingCondition, this);
             this.model.on('added_to_search_field', function() {
                 this.getSuggestionWidget().trigger('clear_fields');                
             }.bind(this));
@@ -161,6 +199,11 @@
         widgedCondition: function() {
             this.getSuggestionWidget().trigger('changeStatus', this.model.get('active'));
         },
+
+        loadingCondition: function() {
+            this.getSuggestionWidget().trigger('loading', this.model.get('loading'));
+        },
+
        
         getSuggestionWidget: function() {
             if (this.dropDownSuggestion === null) {
@@ -170,7 +213,7 @@
 
                 this.dropDownSuggestion = new DropDownWidget({
                     el: el,
-                    target: $('.search-field')
+                    inputTarget: $('.search-field')
                 });
             };
             return this.dropDownSuggestion;
@@ -211,7 +254,7 @@
             //console.log(e.keyCode);
         },
         showResult:function(e) {
-            console.log('Go to result page');
+            this.model.trigger('submit');
         },
         setStatus: function(status) {
             var status = status && status.hasOwnProperty('type') ? false : status || false;
@@ -224,13 +267,15 @@
     var DropDownWidget = Backbone.View.extend({
         initialize:function(options) {
             this.$el = options.el;
+            this.$inputTarget = options.inputTarget;
 
             //events
             this.on('render', this.render, this);
             this.on('changeStatus', this.changeStatus, this);
+            this.on('loading', this.loadingProgress, this);
             this.on('clear_fields', function() {
                 this.trigger('changeStatus', false);
-                options.target.val('');
+                options.inputTarget.val('');
             }.bind(this));
         },
 
@@ -253,16 +298,47 @@
                 '</div>'
         ),
         render: function(suggestions) {
+            var position = this.offsetPosition(this.$inputTarget.get(0));
+                width = this.$inputTarget.width();
+            //Set position of drop down on render
+            this.$el.css({
+                top: position.top + this.$inputTarget.outerHeight(),
+                left: position.left,
+                width: this.$inputTarget.outerWidth()
+            });
+
             this.$el.empty().append(this._tpl({
                 dirrectionClass: '',
                 items: suggestions
             }));
         },
+        offsetPosition: function(obj) {
+            var curleft = curtop = 0;
+            
+            do {
+                curleft += obj.offsetLeft;
+                curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+            
+            return {
+                'left': curleft,
+                'top': curtop
+            };
+        },
+        loadingProgress: function(status) {
+            if (status) {
+                this.$inputTarget.addClass('loading-active');
+            } else {
+                this.$inputTarget.removeClass('loading-active');
+            }
+        },
         changeStatus: function(status) {
             if (status) {
                 this.$el.show();
+                this.$inputTarget.addClass('drop-down-active');
             } else {
                 this.$el.hide();    
+                this.$inputTarget.removeClass('drop-down-active');
             }
         },
         activateCell: function(e) {
