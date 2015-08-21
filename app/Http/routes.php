@@ -13,3 +13,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('home', 'HomeController@index');
+
+Route::group(['prefix' => 'AjaxModules'], function()
+{
+    Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
+});
