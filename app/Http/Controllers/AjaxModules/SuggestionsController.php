@@ -37,17 +37,18 @@ class SuggestionsController extends Controller {
 	{
 		if(Request::ajax()) {
 			$data = Input::all();
-
+			
 			return json_encode($this->getSuggestions($data));
 	    }
 	}
 	private function getSuggestions($data = null)
 	{
 		$result = array();
+		$apiUrl = env("APP_API_URL");
 
 		if ($data !== null) {
 			$client = $this->getClient();
-			$res = $client->post('http://localhost:8080/criteria/2', array(), $data);
+			$res = $client->post($apiUrl . 'criteria/2', array(), $data);
 			$result = $res->getBody()->getContents();
 		}
 		
