@@ -4,6 +4,11 @@
 
 @extends('index')
 
+@section('head-stuff')
+	<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/drop-down.widget.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="main-box">
 	<div class="container">
