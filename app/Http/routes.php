@@ -9,12 +9,20 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('home', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
+//Search URLs
+Route::group(['prefix' => 'search'], function()
+{
+	Route::get('myway', 'SearchResultController@index');
+});
+
+//ajax URLs
 Route::group(['prefix' => 'AjaxModules'], function()
 {
     Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
+});
+
+Route::get('home', function () {
+    return view('welcome');
 });

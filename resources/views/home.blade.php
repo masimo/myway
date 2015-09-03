@@ -1,12 +1,23 @@
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+</head>
+
 @extends('index')
+
+@section('head-stuff')
+	<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/drop-down.widget.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 <div class="main-box">
 	<div class="container">
 		<div class="container-fluid">
-			<!-- <h1>прокладывай свой туристический путь <br> вместе с My way</h1> -->
-			<div class="input-text-box">
-				<input type="text" class="search-field" placeholder='Введите текст'>
+			<h1>прокладывай свой туристический путь <br> вместе с My way</h1>
+			<div class="input-search-box">
+				<div class="input-text-box">
+					<input type="text" class="search-field" placeholder='Введите текст'>	
+				</div>
 				<input type="button" class="submit-search"></input>
 			</div>
 			<div class="main-button-box">
@@ -17,8 +28,9 @@
 	</div>
 	<section class="main-body-container">
 		<h2 class="title-road">
-			<!-- Новые маршруты -->
+			Новые маршруты
 		</h2>
+		<div class="grid-items"></div>
 		<div class="places-outer-box"></div>
 	</section>
 	<footer class="main-footer-box"></footer>

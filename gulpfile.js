@@ -13,16 +13,11 @@ var elixir = require('laravel-elixir');
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-	mix.less(['home-style.less', 'drop-down.widget.scss'], 'public/css/home-style.css');
-});
-elixir(function(mix) {
+	mix.less('home-style.less', 'public/css/home-style.css');
+	mix.less('drop-down.widget.scss', 'public/css/drop-down.widget.css');
 	mix.less('app.less', 'public/css/app.css');
 });
-elixir(function(mix) {
-	mix.scripts([
-		"script.js"
-	], 'public/js/script.js');
-});
+
 elixir(function(mix) {
 	mix.scripts([
 		"_lib/underscore.js",
@@ -30,4 +25,7 @@ elixir(function(mix) {
 		"_lib/bootstrap.min.js",
 		"_lib/backbone.js"
 	], 'public/js/_lib/init.js');
+	mix.scripts([
+		"script.js"
+	], 'public/js/script.js');
 });
