@@ -25,7 +25,6 @@
             //
         },
         getSuggestions: function(query) {
-            var that = this;
             var postData = _.extend({"criteria": this.get('searchField')}, this.defaultQuery);
             this.set('loading', true);
             $.ajax({
@@ -33,60 +32,40 @@
                 url: "/AjaxModules/suggestions",
                 data: postData,
                 dataType: 'json',
-                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') },
+                context: this
             }).done(function(data) {
                 var data = JSON.parse(data);
                 var suggestionList = [];
 
-                that.set('active', true);
+                this.set('active', true);
 
                 for (var i = 0; i < data.criterias.length; i++) {
                     suggestionList.push(_.extend(data.criterias[i],{active:false}));
                 };  
                 
-                that.set('suggestion', suggestionList);
-                that.trigger("change_suggestion");
+                this.set('suggestion', suggestionList);
+                this.trigger("change_suggestion");
 
             }).fail(function() {
-                that.set('active', false);
+                this.set('active', false);
                 console.log("Connection failed");
             }).always(function() {
-                that.set('loading', false);
+                this.set('loading', false);
             });
         },
         getSearchResults: function() {
             var that = this;
             var postData = [];
-            console.log(this.search.get());
-            _.collect(this.search.get(), function(item, key, sads){
-                console.log(item, key, sads);
+            _.collect(this.search.models, function(model, key, sads) {
+                postData.push(model.get('id'));
             });
-            
-            // $.ajax({
-            //     method: "POST",
-            //     url: "/AjaxModules/suggestions",
-            //     data: postData,
-            //     dataType: 'json',
-            //     headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-            // }).done(function(data) {
-            //     var data = JSON.parse(data);
-            //     var suggestionList = [];
-
-            //     that.set('active', true);
-
-            //     for (var i = 0; i < data.criterias.length; i++) {
-            //         suggestionList.push(_.extend(data.criterias[i],{active:false}));
-            //     };  
-                
-            //     that.set('suggestion', suggestionList);
-            //     that.trigger("change_suggestion");
-
-            // }).fail(function() {
-            //     that.set('active', false);
-            //     console.log("Connection failed");
-            // }).always(function() {
-            //     that.set('loading', false);
-            // });
+            var query = $.param({
+                q: postData
+            });
+            if (query) {
+                document.location.href = '/search/myway/?' + query;
+            };
         },
         setCell: function(action) {
             var currentIndex = this.getActiveIndex();

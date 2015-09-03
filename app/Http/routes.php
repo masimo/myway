@@ -14,6 +14,13 @@ Route::get('/', function () {
 });
 Route::get('home', 'HomeController@index');
 
+//Search URLs
+Route::group(['prefix' => 'search'], function()
+{
+	Route::get('myway', 'SearchResultController@index');
+});
+
+//ajax URLs
 Route::group(['prefix' => 'AjaxModules'], function()
 {
     Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
