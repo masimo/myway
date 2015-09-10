@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-## node.js, git, php > 5.5, apache should be installed.
+## node.js, git, php > 5.5 and apache Web server should be installed.
 
 # Use single quotes instead of double quotes to make it work with special-character passwords
 DB_PASSWORD='your_password'
 PROJECTFOLDER='myproject'
-SEARCH_API='your_host' # http://localhost:8080
+SEARCH_API='your_host' # ex. http://localhost:8080/
 
 ## 1)
 # initial steps
