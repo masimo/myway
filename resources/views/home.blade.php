@@ -1,14 +1,10 @@
-<head>
-	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-</head>
-
 @extends('index')
-
 @section('head-stuff')
-	<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
-	<link href="{{ asset('/css/drop-down.widget.css') }}" rel="stylesheet">
+<title>Home Page</title>
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
+<link href="{{ asset('/css/drop-down.widget.css') }}" rel="stylesheet">
 @endsection
-
 @section('content')
 <div class="main-box">
 	<div class="container">
