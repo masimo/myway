@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 ## node.js, git, php > 5.5 and apache Web server should be installed.
+## 1)
+## initial steps
+# sudo git clone https://github.com/masimo/myway "${PROJECTFOLDER}"
+# cd ${PROJECTFOLDER}
+## ran from command line 
+# sh bottstrap/bottstrap.sh
 
 # Use single quotes instead of double quotes to make it work with special-character passwords
 DB_PASSWORD='your_password'
 PROJECTFOLDER='myproject'
 SEARCH_API='your_host' # ex. http://localhost:8080/
-
-## 1)
-# initial steps
-# sudo git clone https://github.com/masimo/myway "${PROJECTFOLDER}"
-# ran from command line 
-# sh bottstrap.sh
 
 # setup hosts file
 ENV="APP_ENV=local
