@@ -13,19 +13,20 @@ var elixir = require('laravel-elixir');
 elixir.config.sourcemaps = false;
 
 elixir(function(mix) {
-	mix.less('home-style.less', 'public/css/home-style.css');
-	mix.less('drop-down.widget.scss', 'public/css/drop-down.widget.css');
 	mix.less('app.less', 'public/css/app.css');
-});
-
-elixir(function(mix) {
+	mix.less('home-style.less', 'public/css/home-style.css');
+	
+	mix.sass('drop-down.widget.scss', 'public/css/drop-down.widget.css');
+	mix.sass('search-result.widget.scss', 'public/css/search-result.widget.css');
+	
 	mix.scripts([
-		"_lib/underscore.js",
 		"_lib/jquery-2.1.4.js",
+		"_lib/underscore.js",
+		"_lib/backbone.js",
 		"_lib/bootstrap.min.js",
-		"_lib/backbone.js"
+		"_lib/require.js"
 	], 'public/js/_lib/init.js');
 	mix.scripts([
-		"script.js"
-	], 'public/js/script.js');
+		"drop-down.widget.js"
+	], 'public/js/drop-down.widget.js');
 });

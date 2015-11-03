@@ -1,4 +1,5 @@
-(function() {
+define('C.drop-down.widget', function() {
+
     var SerachCriteria = Backbone.Collection.extend({
         initialize: function() {
             //
@@ -162,14 +163,6 @@
                 }.bind(this));
 
         },
-        events: {
-            "keydown": "keyAction",
-            "keyup .search-field": "searchFieldAction",
-            "click .submit-search": "showResult",
-            "click": "setStatus"
-
-        },
-       
         
         render: function() {
             this.getSuggestionWidget().trigger('render', this.model.get('suggestion'));
@@ -325,6 +318,17 @@
             this.trigger('clicked_item', id);
         }
     });
-
-    return new View({el:'body'});
-})();
+    
+    return function dropDown(opt) {
+        var buildComponent = _.extend(opt, {
+            el: 'body',
+            events: {
+                "keydown": "keyAction",
+                "keyup .search-field": "searchFieldAction",
+                "click .submit-search": "showResult",
+                "click": "setStatus"
+            }
+        });
+        return new View(buildComponent);
+    }
+});

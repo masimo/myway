@@ -33,6 +33,6 @@ class SearchResultController extends Controller {
 	public function index(Request $request)
 	{
 		$searchParam = Request::input('q');
-		return view('myway', ['values' => $searchParam]);
+		return view('_pages/search/myway', ['values' => $searchParam]);
 	}
 }
