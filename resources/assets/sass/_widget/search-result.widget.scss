@@ -1,7 +1,10 @@
 @import "../_main";
 .main-search-result-box{
-	background-color: $c-lite-grey; 
 	padding: 10px;
+	
+	.hidden{
+		display: none !important;
+	}
 	
 	.search-inner-box{
 		width: 100%;
@@ -12,7 +15,7 @@
 		
 		.one-item-wrapper{
 			width: 260px;
-			margin: 15px auto;
+			margin: 15px auto 25px;
 			background-color: $c-white;
 			color: $f-color-01;
 			border: 1px solid $c-lite-grey-border;

@@ -21,6 +21,7 @@ Route::group(['prefix' => 'search'], function()
 Route::group(['prefix' => 'AjaxModules'], function()
 {
     Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
+    Route::post('search', 'AjaxModules\SearchController@index');
 });
 
 Route::get('home', function () {

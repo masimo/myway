@@ -1,8 +1,11 @@
-require(['C.drop-down.widget', 'C.search-result.widget'], function(dropDown, searchResult) {
+require(['C.drop-down.widget', 'C.search-result.widget', 'C.global'], function(dropDown, showResult, global) {
+
 	var View = Backbone.View.extend({
 		initialize: function() {
-			//
+			var options = {};
+			options = global();
+			this.showResult = showResult(options);
 		}
-	})
+	});
 	return new View();
 });

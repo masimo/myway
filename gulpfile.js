@@ -39,7 +39,7 @@ elixir(function(mix) {
 
 	//single pages
 	mix.less('home-style.less', 'public/css/home-style.css');
-	mix.sass('search/search_page.scss', 'public/css/search/search_page.css');
+	mix.sass('search/search-page.scss', 'public/css/search/search-page.css');
 	
 	//widgets
 	mix.sass('_widget/drop-down.widget.scss', 'public/css/_widget/drop-down.widget.css');
