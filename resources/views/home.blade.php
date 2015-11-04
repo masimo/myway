@@ -1,9 +1,14 @@
 @extends('index')
 @section('head-stuff')
-<title>Home Page</title>
-<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
-<link href="{{ asset('/css/drop-down.widget.css') }}" rel="stylesheet">
+	<title>Home Page</title>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+	<link href="{{ asset('/css/home-style.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/_widget/drop-down.widget.css') }}" rel="stylesheet">
+@endsection
+
+@section('js-stuff')
+	<script src="{{ asset('/js/home_page.js') }}"></script>
+	<script src="{{ asset('/js/_widget/drop-down.widget.js') }}"></script>
 @endsection
 @section('content')
 <div class="main-box">
@@ -31,6 +36,4 @@
 	</section>
 	<footer class="main-footer-box"></footer>
 </div>
-<script src="{{ asset('/js/home_page.js') }}"></script>
-<script src="{{ asset('/js/_widget/drop-down.widget.js') }}"></script>
 @endsection

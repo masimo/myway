@@ -1,12 +1,18 @@
-@import "_main";
+@import "../_main";
 .main-search-result-box{
 	background-color: $c-lite-grey; 
 	padding: 10px;
 	
+	.search-inner-box{
+		width: 100%;
+		display: table;
+	}
 	.column-wrapper{
-		width: 260px;
+		display: table-cell;
+		
 		.one-item-wrapper{
-			margin: 15px 0;
+			width: 260px;
+			margin: 15px auto;
 			background-color: $c-white;
 			color: $f-color-01;
 			border: 1px solid $c-lite-grey-border;
@@ -18,7 +24,7 @@
 			.img-box{
 				min-height: 125px;
 				overflow: hidden;
-				background-image: url(../img/activity-anim-40.gif);
+				background-image: url(/img/activity-anim-40.gif);
 				background-position: 50% 50%;
 				background-repeat: no-repeat;
 				-webkit-border-radius: 10px 10px 0 0;
@@ -42,5 +48,5 @@
 			        	border-radius: 0 0 10px 10px;
 			}
 		}
-	}	
+	}
 }

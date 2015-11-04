@@ -12,13 +12,9 @@ var elixir = require('laravel-elixir');
  */
 elixir.config.sourcemaps = false;
 
+//JS
 elixir(function(mix) {
-	mix.less('app.less', 'public/css/app.css');
-	mix.less('home-style.less', 'public/css/home-style.css');
-	
-	mix.sass('drop-down.widget.scss', 'public/css/drop-down.widget.css');
-	mix.sass('search-result.widget.scss', 'public/css/search-result.widget.css');
-	
+	//marge libraries
 	mix.scripts([
 		"_lib/jquery-2.1.4.js",
 		"_lib/underscore.js",
@@ -27,7 +23,25 @@ elixir(function(mix) {
 		"_lib/require.js"
 	], 'public/js/_lib/init.js');
 
+	//widgets
 	mix.scripts("_widget/drop-down.widget.js", 'public/js/_widget/drop-down.widget.js');
+	mix.scripts("_widget/search-result.widget.js", 'public/js/_widget/search-result.widget.js');
+	
+	//Pages
 	mix.scripts("home_page.js", 'public/js/home_page.js');
 	mix.scripts("search/search_result.js", 'public/js/search/search_result.js');
 });	
+
+//css compilation
+elixir(function(mix) {
+	//main config
+	mix.less('app.less', 'public/css/app.css');
+
+	//single pages
+	mix.less('home-style.less', 'public/css/home-style.css');
+	mix.sass('search/search_page.scss', 'public/css/search/search_page.css');
+	
+	//widgets
+	mix.sass('_widget/drop-down.widget.scss', 'public/css/_widget/drop-down.widget.css');
+	mix.sass('_widget/search-result.widget.scss', 'public/css/_widget/search-result.widget.css');
+});
