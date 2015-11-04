@@ -26,7 +26,8 @@ elixir(function(mix) {
 		"_lib/bootstrap.min.js",
 		"_lib/require.js"
 	], 'public/js/_lib/init.js');
-	mix.scripts([
-		"drop-down.widget.js"
-	], 'public/js/drop-down.widget.js');
-});
+
+	mix.scripts("_widget/drop-down.widget.js", 'public/js/_widget/drop-down.widget.js');
+	mix.scripts("home_page.js", 'public/js/home_page.js');
+	mix.scripts("search/search_result.js", 'public/js/search/search_result.js');
+});	

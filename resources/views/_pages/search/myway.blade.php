@@ -23,5 +23,5 @@
 		</div>
 	</div>
 </div>
-<script src="{{ asset('/js/script.js') }}"></script>
+<script src="{{ asset('/js/search/search_result.js') }}"></script>
 @endsection

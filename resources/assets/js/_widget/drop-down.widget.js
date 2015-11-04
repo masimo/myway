@@ -146,9 +146,7 @@ define('C.drop-down.widget', function() {
         dropDownSuggestion: null,
         
         initialize: function(options) {
-            this.$el = $(options.el);
-            this.model = new Model;
-
+            
             // model events
             this.model.on('change_suggestion', this.render, this);
             this.model.on('change:active', this.widgedCondition, this);
@@ -320,15 +318,19 @@ define('C.drop-down.widget', function() {
     });
     
     return function dropDown(opt) {
-        var buildComponent = _.extend(opt, {
+        var opt = opt || {};
+
+        var buildComponent = _.extend({
             el: 'body',
+            model: new Model(),
             events: {
                 "keydown": "keyAction",
                 "keyup .search-field": "searchFieldAction",
                 "click .submit-search": "showResult",
                 "click": "setStatus"
             }
-        });
+        }, opt);
+        
         return new View(buildComponent);
     }
 });

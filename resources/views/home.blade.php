@@ -31,5 +31,6 @@
 	</section>
 	<footer class="main-footer-box"></footer>
 </div>
-<script src="{{ asset('/js/script.js') }}"></script>
+<script src="{{ asset('/js/home_page.js') }}"></script>
+<script src="{{ asset('/js/_widget/drop-down.widget.js') }}"></script>
 @endsection
