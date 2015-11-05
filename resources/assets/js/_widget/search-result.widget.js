@@ -61,9 +61,6 @@ define('C.search-result.widget', function() {
 					counter = 0;
 				};
 			}.bind(this));
-
-
-			console.log(columnSize);
 		},
 		onResize: function(e) {
 			var cellSize = this.model.get('cellSize');

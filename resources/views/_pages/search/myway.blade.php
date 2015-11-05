@@ -1,12 +1,13 @@
 @extends('index')
 
 @section('head-stuff')
-	<script type="text/javascript">
+	<script id="globalVariable" type="text/javascript">
 		define('C.global', function() {
 			return function global() {
 				return {!! $values !!}
 			};
 		});
+		$('#globalVariable').remove();
 	</script>
 	<link href="{{ asset('/css/search/search-page.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/_widget/search-result.widget.css') }}" rel="stylesheet">
@@ -17,9 +18,7 @@
 	<script src="{{ asset('/js/_widget/search-result.widget.js') }}"></script>
 	<script src="{{ asset('/js/_widget/drop-down.widget.js') }}"></script>
 @endsection
-@for ($i = 0; $i < sizeof($values); $i++)
-    The current value is {{ $values[$i] }}
-@endfor
+
 @section('content')
 <div class="search-field-wrapper"></div>
 <div class="main-search-result-box">
