@@ -1,4 +1,6 @@
 @extends('index')
+@include('footer')
+@include('search-field')
 
 @section('head-stuff')
 	<script id="globalVariable" type="text/javascript">
@@ -11,6 +13,7 @@
 	</script>
 	<link href="{{ asset('/css/search/search-page.css') }}" rel="stylesheet">
 	<link href="{{ asset('/css/_widget/search-result.widget.css') }}" rel="stylesheet">
+	<link href="{{ asset('/css/_widget/drop-down.widget.css') }}" rel="stylesheet">
 @endsection
 
 @section('js-stuff')
@@ -20,8 +23,10 @@
 @endsection
 
 @section('content')
-<div class="search-field-wrapper"></div>
-<div class="main-search-result-box">
+<div class="search-field-wrapper">
+	@yield('search-field')
+</div>
+<section class="main-search-result-box">
 	<div class="search-inner-box">
 		<div class="column-wrapper col-1 hidden">
 			<div class="one-item-wrapper">
@@ -51,5 +56,8 @@
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
+@yield('footer-stuff')
+
 @endsection

@@ -1,4 +1,7 @@
 @extends('index')
+@include('search-field')
+@include('footer')
+
 @section('head-stuff')
 	<title>Home Page</title>
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
@@ -15,15 +18,10 @@
 	<div class="container">
 		<div class="container-fluid">
 			<h1>прокладывай свой туристический путь <br> вместе с My way</h1>
-			<div class="input-search-box">
-				<div class="input-text-box">
-					<input type="text" class="search-field" placeholder='Введите текст'>	
-				</div>
-				<input type="button" class="submit-search"></input>
-			</div>
+			@yield('search-field')
 			<div class="main-button-box">
-				<a class="top-route">Популярные маршруты</a>
-				<a class="latest-route">Последние маршруты</a>
+				<a class="rate-ways-btn active">Популярные маршруты</a>
+				<a class="rate-ways-btn">Последние маршруты</a>
 			</div>
 		</div>
 	</div>
@@ -34,6 +32,6 @@
 		<div class="grid-items"></div>
 		<div class="places-outer-box"></div>
 	</section>
-	<footer class="main-footer-box"></footer>
 </div>
+@yield('footer-stuff')
 @endsection

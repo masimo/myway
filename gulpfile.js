@@ -36,9 +36,10 @@ elixir(function(mix) {
 elixir(function(mix) {
 	//main config
 	mix.less('app.less', 'public/css/app.css');
+	mix.sass('_global/global-stuff.scss', 'public/css/_global/global-stuff.css');
 
 	//single pages
-	mix.less('home-style.less', 'public/css/home-style.css');
+	mix.sass('home-style.scss', 'public/css/home-style.css');
 	mix.sass('search/search-page.scss', 'public/css/search/search-page.css');
 	
 	//widgets

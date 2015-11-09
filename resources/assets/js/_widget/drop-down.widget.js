@@ -183,7 +183,7 @@ define('C.drop-down.widget', function() {
 
                 this.dropDownSuggestion = new DropDownWidget({
                     el: el,
-                    inputTarget: $('.search-field')
+                    inputTarget: $('.search-field-wrapper')
                 });
             };
             return this.dropDownSuggestion;
@@ -231,6 +231,9 @@ define('C.drop-down.widget', function() {
 
             this.model.set('active', status);
 
+        },
+        focusField: function(e) {
+            this.$('.search-field').focus();
         }
     });
     
@@ -321,13 +324,14 @@ define('C.drop-down.widget', function() {
         var opt = opt || {};
 
         var buildComponent = _.extend({
-            el: 'body',
+            el: '.input-search-box',
             model: new Model(),
             events: {
-                "keydown": "keyAction",
+                "keydown body": "keyAction",
                 "keyup .search-field": "searchFieldAction",
                 "click .submit-search": "showResult",
-                "click": "setStatus"
+                "click body": "setStatus",
+                "click .search-field-wrapper": "focusField"
             }
         }, opt);
         
