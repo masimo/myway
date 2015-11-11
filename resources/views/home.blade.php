@@ -16,7 +16,7 @@
 @section('content')
 <div class="main-box">
 	<div class="container">
-		<div class="container-fluid">
+		<div class="container-field">
 			<h1>прокладывай свой туристический путь <br> вместе с My way</h1>
 			@yield('search-field')
 			<div class="main-button-box">

@@ -135,9 +135,10 @@ define('C.drop-down.widget', function() {
 
         addItemToCriteria: function() {
             var currentIndex = this.getActiveIndex();
+            var item = this.get('suggestion')[currentIndex];
             
-            this.search.add(this.get('suggestion')[currentIndex]);
-            this.trigger('added_to_search_field');
+            this.search.add(item);
+            this.trigger('added_to_search_field', item);
         }
     });
 
@@ -151,8 +152,9 @@ define('C.drop-down.widget', function() {
             this.model.on('change_suggestion', this.render, this);
             this.model.on('change:active', this.widgedCondition, this);
             this.model.on('change:loading', this.loadingCondition, this);
-            this.model.on('added_to_search_field', function() {
-                this.getSuggestionWidget().trigger('clear_fields');                
+            this.model.on('added_to_search_field', function(item) {
+                this.getSuggestionWidget().trigger('clear_fields');
+                this.addItemToView(item);
             }.bind(this));
 
             this.getSuggestionWidget()
@@ -179,7 +181,7 @@ define('C.drop-down.widget', function() {
             if (this.dropDownSuggestion === null) {
 
                 var el = $('<div class="dropdown-wrapper"></div>');
-                this.$el.append(el);
+                $('body').append(el);
 
                 this.dropDownSuggestion = new DropDownWidget({
                     el: el,
@@ -187,6 +189,11 @@ define('C.drop-down.widget', function() {
                 });
             };
             return this.dropDownSuggestion;
+        },
+
+        addItemToView: function(item){
+            console.log(item);
+            this.$('.search-field-wrapper').append(this._itemTpl(item));
         },
        
         searchFieldAction: function(e) {
@@ -233,8 +240,18 @@ define('C.drop-down.widget', function() {
 
         },
         focusField: function(e) {
-            this.$('.search-field').focus();
-        }
+            var $target = $(e.target);
+            if ($target.hasClass('search-field-wrapper')) {
+                $target.append(this.$('.search-field'));
+                this.$('.search-field').focus();
+            };
+        },
+        _itemTpl: _.template(
+            '<div class="item" data-id="<%- id %>">' +
+                '<span class="item-name"><%- name %></span>' +
+                '<div class="close-btn"></div>' +
+            '</div>'
+        )
     });
     
     var DropDownWidget = Backbone.View.extend({
@@ -248,7 +265,7 @@ define('C.drop-down.widget', function() {
             this.on('loading', this.loadingProgress, this);
             this.on('clear_fields', function() {
                 this.trigger('changeStatus', false);
-                options.inputTarget.val('');
+                options.inputTarget.find('.search-field').val('');
             }.bind(this));
         },
 
@@ -327,11 +344,11 @@ define('C.drop-down.widget', function() {
             el: '.input-search-box',
             model: new Model(),
             events: {
-                "keydown body": "keyAction",
+                "keydown": "keyAction",
                 "keyup .search-field": "searchFieldAction",
                 "click .submit-search": "showResult",
                 "click body": "setStatus",
-                "click .search-field-wrapper": "focusField"
+                "click .search-field-wrapper": "focusField",
             }
         }, opt);
         

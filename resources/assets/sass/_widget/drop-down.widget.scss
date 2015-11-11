@@ -69,11 +69,24 @@
 				        background-size: 20px;
 			}
 			.item{
-				padding: 5px;
+				padding: 6px 25px 6px 5px;
 				cursor: default;
+				position: relative;
 				border: 1px solid #ccc;
+				background-color: $body-bg-color; 
 				float: left;
 				line-height: $f-size-01;
+				.close-btn{
+					position: absolute;
+					top: 8px;
+					right: 5px; 
+					width: 10px;
+					height: 10px;
+					cursor: pointer;
+					background-color: $c-grey; 
+					-webkit-border-radius: 1em;
+                    		border-radius: 1em;
+				}
 			}
 			.search-field{
 				float: left;
