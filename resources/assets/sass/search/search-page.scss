@@ -1,0 +1,10 @@
+@import "../_main";
+
+body{
+	min-width: 320px;
+	background-color: $body-bg-color; 
+}
+.search-field-wrapper{
+	padding: 30px 30px;
+	background-color: $search-bg-color;
+}

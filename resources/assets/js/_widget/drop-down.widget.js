@@ -1,4 +1,5 @@
-(function() {
+define('C.drop-down.widget', function() {
+
     var SerachCriteria = Backbone.Collection.extend({
         initialize: function() {
             //
@@ -134,9 +135,10 @@
 
         addItemToCriteria: function() {
             var currentIndex = this.getActiveIndex();
+            var item = this.get('suggestion')[currentIndex];
             
-            this.search.add(this.get('suggestion')[currentIndex]);
-            this.trigger('added_to_search_field');
+            this.search.add(item);
+            this.trigger('added_to_search_field', item);
         }
     });
 
@@ -145,15 +147,14 @@
         dropDownSuggestion: null,
         
         initialize: function(options) {
-            this.$el = $(options.el);
-            this.model = new Model;
-
+            
             // model events
             this.model.on('change_suggestion', this.render, this);
             this.model.on('change:active', this.widgedCondition, this);
             this.model.on('change:loading', this.loadingCondition, this);
-            this.model.on('added_to_search_field', function() {
-                this.getSuggestionWidget().trigger('clear_fields');                
+            this.model.on('added_to_search_field', function(item) {
+                this.getSuggestionWidget().trigger('clear_fields');
+                this.addItemToView(item);
             }.bind(this));
 
             this.getSuggestionWidget()
@@ -162,14 +163,6 @@
                 }.bind(this));
 
         },
-        events: {
-            "keydown": "keyAction",
-            "keyup .search-field": "searchFieldAction",
-            "click .submit-search": "showResult",
-            "click": "setStatus"
-
-        },
-       
         
         render: function() {
             this.getSuggestionWidget().trigger('render', this.model.get('suggestion'));
@@ -188,14 +181,19 @@
             if (this.dropDownSuggestion === null) {
 
                 var el = $('<div class="dropdown-wrapper"></div>');
-                this.$el.append(el);
+                $('body').append(el);
 
                 this.dropDownSuggestion = new DropDownWidget({
                     el: el,
-                    inputTarget: $('.search-field')
+                    inputTarget: $('.search-field-wrapper')
                 });
             };
             return this.dropDownSuggestion;
+        },
+
+        addItemToView: function(item){
+            console.log(item);
+            this.$('.search-field-wrapper').append(this._itemTpl(item));
         },
        
         searchFieldAction: function(e) {
@@ -240,7 +238,20 @@
 
             this.model.set('active', status);
 
-        }
+        },
+        focusField: function(e) {
+            var $target = $(e.target);
+            if ($target.hasClass('search-field-wrapper')) {
+                $target.append(this.$('.search-field'));
+                this.$('.search-field').focus();
+            };
+        },
+        _itemTpl: _.template(
+            '<div class="item" data-id="<%- id %>">' +
+                '<span class="item-name"><%- name %></span>' +
+                '<div class="close-btn"></div>' +
+            '</div>'
+        )
     });
     
     var DropDownWidget = Backbone.View.extend({
@@ -254,7 +265,7 @@
             this.on('loading', this.loadingProgress, this);
             this.on('clear_fields', function() {
                 this.trigger('changeStatus', false);
-                options.inputTarget.val('');
+                options.inputTarget.find('.search-field').val('');
             }.bind(this));
         },
 
@@ -325,6 +336,22 @@
             this.trigger('clicked_item', id);
         }
     });
+    
+    return function dropDown(opt) {
+        var opt = opt || {};
 
-    return new View({el:'body'});
-})();
+        var buildComponent = _.extend({
+            el: '.input-search-box',
+            model: new Model(),
+            events: {
+                "keydown": "keyAction",
+                "keyup .search-field": "searchFieldAction",
+                "click .submit-search": "showResult",
+                "click body": "setStatus",
+                "click .search-field-wrapper": "focusField",
+            }
+        }, opt);
+        
+        return new View(buildComponent);
+    }
+});

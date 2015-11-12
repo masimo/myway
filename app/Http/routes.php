@@ -11,6 +11,9 @@
 */
 Route::get('/', 'HomeController@index');
 
+// My account
+Route::get('my', 'MyController@index');
+
 //Search URLs
 Route::group(['prefix' => 'search'], function()
 {
@@ -21,8 +24,15 @@ Route::group(['prefix' => 'search'], function()
 Route::group(['prefix' => 'AjaxModules'], function()
 {
     Route::post('suggestions', 'AjaxModules\SuggestionsController@index');
+    Route::post('search', 'AjaxModules\SearchController@index');
 });
+
 
 Route::get('home', function () {
     return view('welcome');
 });
+
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);

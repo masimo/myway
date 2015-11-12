@@ -1,0 +1,10 @@
+@import "../_main";
+
+.fotter-box{
+	display: block;
+	min-height: 95px;
+	background-color: $footer-bg-color;
+}
+textarea:focus, input:focus{
+    outline: 0;
+}
