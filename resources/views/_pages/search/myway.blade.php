@@ -23,7 +23,7 @@
 @endsection
 
 @section('content')
-<div class="search-field-wrapper">
+<div class="search-outer-box">
 	@yield('search-field')
 </div>
 <section class="main-search-result-box">

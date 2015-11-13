@@ -13,11 +13,13 @@ define('C.drop-down.widget', function() {
             "limit": 6 // - not required default 6
         },
         initialize: function(options) {
-            this.on('set_cell_active', this.setCell, this);
-            this.on('change:searchField', this.getSuggestions, this);
-            this.on('select_item', this.setItemToActiveState, this);
-            this.on('add_item_to_criteria', this.addItemToCriteria, this);
-            this.on('submit', this.getSearchResults, this);
+            this.on('set_cell_active', this.setCell, this)
+                .on('change:searchField', this.getSuggestions, this)
+                .on('select_item', this.setItemToActiveState, this)
+                .on('add_item_to_criteria', this.addItemToCriteria, this)
+                .on('submit', this.getSearchResults, this)
+                .on('remove_search_item', this.removeSearchItemById, this);
+
 
             this.search = new SerachCriteria;
 
@@ -138,7 +140,17 @@ define('C.drop-down.widget', function() {
             var item = this.get('suggestion')[currentIndex];
             
             this.search.add(item);
-            this.trigger('added_to_search_field', item);
+
+            this.trigger('added_to_search_field', _.clone(this.search.models));
+        },
+        removeSearchItemById: function(id){
+            var model = _.filter(_.clone(this.search.models), function(chr){
+                return chr.attributes.id === id;
+            })[0];
+            
+            this.search.remove(model.id);
+
+            this.trigger('added_to_search_field', _.clone(this.search.models));
         }
     });
 
@@ -152,15 +164,24 @@ define('C.drop-down.widget', function() {
             this.model.on('change_suggestion', this.render, this);
             this.model.on('change:active', this.widgedCondition, this);
             this.model.on('change:loading', this.loadingCondition, this);
-            this.model.on('added_to_search_field', function(item) {
+            this.model.on('added_to_search_field', function(items) {
                 this.getSuggestionWidget().trigger('clear_fields');
-                this.addItemToView(item);
+                this.renderItemsInField(items);
             }.bind(this));
+
+            this.decodeFromSearchQuery(window.location.search)
 
             this.getSuggestionWidget()
                 .on('clicked_item', function(payload) {
                     this.model.trigger('select_item', payload);
                 }.bind(this));
+
+            this.$('input.search-field')
+            // event handler
+            .keyup(this.resizeInput);
+            // resize on page load
+            //.each(resizeInput);
+
 
         },
         
@@ -190,10 +211,43 @@ define('C.drop-down.widget', function() {
             };
             return this.dropDownSuggestion;
         },
+        decodeFromSearchQuery: function(uri){
+            //$.parseParams(uri);
+        },
+        renderItemsInField: function(items) {
+            var $input = this.$('.search-field');
 
-        addItemToView: function(item){
-            console.log(item);
-            this.$('.search-field-wrapper').append(this._itemTpl(item));
+            // Defaults
+            var inputAttr = {
+                placeholder: this.model.get('placeholder'),
+                size: 20
+            };
+
+            this.$('.item').each(function() {
+                this.remove();
+            });
+
+            // Rewrite default params
+            if (items.length) {
+                inputAttr = {
+                    placeholder: '',
+                    size: 1
+                }
+            };
+
+            _.each(items, function(item) {
+                this.$('.search-field-wrapper').append(this._itemTpl(item.attributes));
+            }.bind(this));
+
+            $input.attr({
+                'placeholder': inputAttr.placeholder,
+                'size': inputAttr.size
+            });
+            this.$('.search-field-wrapper').append($input);
+        },
+
+        resizeInput: function() {
+            $(this).attr('size', $(this).val().length);
         },
        
         searchFieldAction: function(e) {
@@ -245,6 +299,10 @@ define('C.drop-down.widget', function() {
                 $target.append(this.$('.search-field'));
                 this.$('.search-field').focus();
             };
+        },
+        removeSearchQuery: function(e){
+            var id = $(e.target).closest('.item').data('id');
+            this.model.trigger('remove_search_item', id);
         },
         _itemTpl: _.template(
             '<div class="item" data-id="<%- id %>">' +
@@ -342,13 +400,16 @@ define('C.drop-down.widget', function() {
 
         var buildComponent = _.extend({
             el: '.input-search-box',
-            model: new Model(),
+            model: new Model({
+                placeholder: $('.input-search-box .search-field').attr('placeholder')
+            }),
             events: {
                 "keydown": "keyAction",
                 "keyup .search-field": "searchFieldAction",
                 "click .submit-search": "showResult",
                 "click body": "setStatus",
                 "click .search-field-wrapper": "focusField",
+                "click .close-btn": "removeSearchQuery"
             }
         }, opt);
         
