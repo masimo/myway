@@ -69,13 +69,17 @@
 				        background-size: 20px;
 			}
 			.item{
-				padding: 6px 25px 6px 5px;
-				cursor: default;
+				float: left;
 				position: relative;
+				padding: 7px 25px 7px 5px;
+				margin: 0 5px 5px; 
 				border: 1px solid #ccc;
 				background-color: $body-bg-color; 
-				float: left;
+				cursor: default;
 				line-height: $f-size-01;
+				-webkit-border-radius: 3px; 
+						border-radius: 3px; 
+				
 				.close-btn{
 					position: absolute;
 					top: 8px;
@@ -93,7 +97,8 @@
 				padding: 5px;
 				margin-left: 10px;
 				border: none;
-				line-height: $f-size-01;
+				background-color: transparent; 
+				line-height: 18px;
 			}
 		}	
 	}

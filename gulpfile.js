@@ -20,7 +20,8 @@ elixir(function(mix) {
 		"_lib/underscore.js",
 		"_lib/backbone.js",
 		"_lib/bootstrap.min.js",
-		"_lib/require.js"
+		"_lib/require.js",
+		"_lib/jquery.ba-bbq.js"
 	], 'public/js/_lib/init.js');
 
 	//widgets
