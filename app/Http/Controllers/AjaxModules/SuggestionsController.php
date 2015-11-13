@@ -48,7 +48,7 @@ class SuggestionsController extends Controller {
 
 		if ($data !== null) {
 			$client = $this->getClient();
-			$res = $client->post($apiUrl . '/criteria/2', array(), $data);
+			$res = $client->post($apiUrl . '/criteria/autosuggest', array(), $data);
 			$result = $res->getBody()->getContents();
 		}
 		
