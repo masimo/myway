@@ -2,7 +2,14 @@
 
 use Input;
 use Request;
-//use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+
+use \GuzzleHttp\Client;
+
+use Illuminate\Routing\Route;
+
 
 class SearchResultController extends Controller {
 	private $client = null;
@@ -24,6 +31,22 @@ class SearchResultController extends Controller {
 		//$this->middleware('auth');
 	}
 
+	protected function getOptions()
+	{
+		$options = array();
+		return $options;
+	}
+
+	protected function encodeData($data)
+	{
+		return $data;
+	}
+	
+	protected function decodeData($data)
+	{
+		return $data;
+	}
+
 	/**
      * Show the application dashboard to the user.
      *
@@ -33,30 +56,79 @@ class SearchResultController extends Controller {
      */
 	public function index(Request $request)
 	{
-		$searchParam = Request::input('q');
-		$data = $this->getSuggestions($searchParam);
-		return view('_pages/search/myway', ['values' => $data]);
-	}
-	private function getSuggestions($searchParam = null)
-	{
-		$result = array();
-		$apiUrl = env("APP_API_URL");
+		$data = Request::input('q');
 
-		if ($searchParam !== null) {
-			$client = $this->getClient();
-			$res = $client->post($apiUrl . '/criteria/search', array(), $searchParam);
-			$result = $res->getBody()->getContents();
-		}
-		
-		return $result;
-		
+		$url = "/criteria/search";
+		$apiBaseUrl = env("APP_API_URL");
+
+
+
+		$result = $this->postUri(array(
+			"criteries_ids" => $data
+		), $apiBaseUrl . $url);
+		return view('_pages/search/myway', ['values' => $result]);
 	}
 
-	private function getClient()
-	{
-		if ($this->client === null) {
-			$this->client = new \GuzzleHttp\Client();
-		}
-		return $this->client;
-	}
+	private function postUri(   $data, $url,
+                                $extraOptions = null,
+                                $extraHeaders = null,
+                                $successStatuses = null,
+                                $timeout = null,
+                                $connTimeout = null,
+                                $userAgent = null)
+    {
+        $result = array();
+        $client = new Client();
+
+        $options = $this->mergeOptions($this->getOptions(), $extraOptions);
+        $headers = $this->mergeHeaders($this->getHttpHeaders(), $extraHeaders);
+    
+        if ($data !== null) {
+            try {
+                $res = $client->post($url, [
+                    'headers' => $headers,
+                    'json' => $data
+                ]);
+                $result = $res->getBody();
+
+            } catch (ClientException $e) {
+                return $e->getResponse()->getBody();
+            }
+        }
+        
+        return $result;
+        
+    }
+
+    final private function mergeOptions($options, $extraOptions)
+    {
+        if(is_array($extraOptions))
+        {
+            foreach ( $extraOptions as $key => $value )
+                $options[$key] = $value;
+        }
+        
+        return $options;
+    }
+
+    final private function mergeHeaders($headers, $extraHeaders)
+    {
+        if(is_array($extraHeaders))
+        {
+            foreach ( $extraHeaders as $key => $value )
+                $headers[$key] = $value;
+        }
+        
+        return $headers;
+    }
+
+    protected function getHttpHeaders()
+    {
+        $headers = array(
+             'Content-Type' => "application/json",
+             'Accept' => 'application/json'
+        );
+
+        return $headers;
+    }
 }
