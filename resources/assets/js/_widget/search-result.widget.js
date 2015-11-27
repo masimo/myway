@@ -30,6 +30,7 @@ define('C.search-result.widget', function() {
 			return _.clone(this.collection.models);
 		}
 	});
+	
 	var View = Backbone.View.extend({
 		initialize: function() {
 			_.bindAll(this, 'onResize', 'render');
@@ -72,10 +73,10 @@ define('C.search-result.widget', function() {
 		_itemTpl: _.template(
 			'<div class="one-item-wrapper">' +
 				'<div class="img-box">' +
-					'<img src="<%- picture_url%>" alt="">' +
+					'<img src="<%- pictureUrl%>" alt="">' +
 				'</div>' +
-				'<h3 class="item-title"><%- label%></h3>' +
-				'<div class="descr-wrapper"><%- short_description%></div>' +
+				'<h3 class="item-title"><%- name%></h3>' +
+				'<div class="descr-wrapper"><%- shortDescription%></div>' +
 			'</div>'
 		),
 		_columnTpl: _.template(

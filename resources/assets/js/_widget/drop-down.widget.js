@@ -28,14 +28,15 @@ define('C.drop-down.widget', function() {
             //
         },
         getSuggestions: function(query) {
-            var postData = _.extend({"criteria": this.get('searchField')}, this.defaultQuery);
+            var postData = _.extend(this.defaultQuery, {"criteria": this.get('searchField')});
             this.set('loading', true);
             $.ajax({
                 method: "POST",
                 url: "/AjaxModules/suggestions",
                 data: postData,
-                dataType: 'json',
-                headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') },
+                headers: {
+                    'X-CSRF-Token': $('meta[name=_token]').attr('content')
+                },
                 context: this
             }).done(function(data) {
                 var data = JSON.parse(data);
@@ -50,7 +51,8 @@ define('C.drop-down.widget', function() {
                 this.set('suggestion', suggestionList);
                 this.trigger("change_suggestion");
 
-            }).fail(function() {
+            }).fail(function(err) {
+                console.log(err);
                 this.set('active', false);
                 console.log("Connection failed");
             }).always(function() {

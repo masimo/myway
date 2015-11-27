@@ -3,7 +3,7 @@ require(['C.drop-down.widget', 'C.search-result.widget', 'C.global'], function(d
 	var View = Backbone.View.extend({
 		initialize: function() {
 			var options = {};
-			options = global();
+			options.blocks = global();
 			this.showResult = showResult(options);
 			this.dropDown = dropDown();
 		}
